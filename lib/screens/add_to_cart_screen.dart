@@ -1,22 +1,33 @@
 import 'package:classe_a_clone/models/Item.dart';
 import 'package:classe_a_clone/providers/cart_provider.dart';
+import 'package:classe_a_clone/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddToCartScreen extends StatefulWidget {
   final Item selectedItem;
-  AddToCartScreen(this.selectedItem, {Key? key}) : super(key: key);
+  final int quantity;
+  final bool? editMode;
+  AddToCartScreen(this.selectedItem, this.quantity, {this.editMode, Key? key})
+      : super(key: key);
 
   @override
   _AddToCartScreenState createState() => _AddToCartScreenState();
 }
 
 class _AddToCartScreenState extends State<AddToCartScreen> {
-  // var _totalPrice = 0.0;
   var _quantity = 0;
+  @override
+  void initState() {
+    _quantity = widget.quantity;
+    super.initState();
+  }
+
+  // var _totalPrice = 0.0;
   final cartProvider = CartProvider.cartProvider;
   @override
   Widget build(BuildContext context) {
+    final item = widget.selectedItem;
     return Scaffold(
       backgroundColor: Colors.grey[900],
       body: SafeArea(
@@ -132,9 +143,16 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                   return ElevatedButton(
                     onPressed: () {
                       if (_quantity > 0) {
-                        ref.read(cartProvider).addItemToCart(
-                            CartItem(_quantity, widget.selectedItem));
-                        Navigator.of(context).pop();
+                        if (widget.editMode == true) {
+                          ref
+                              .read(cartProvider)
+                              .updateQuantity(widget.selectedItem, _quantity);
+                          Navigator.of(context).pop();
+                        } else {
+                          ref.read(cartProvider).addItemToCart(
+                              CartItem(_quantity, widget.selectedItem));
+                          Navigator.of(context).pop();
+                        }
                       }
                     },
                     style: ButtonStyle(
@@ -146,7 +164,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                       ),
                     ),
                     child: Text(
-                      'ADICIONAR R\$${widget.selectedItem.price * _quantity}',
+                      'ADICIONAR R\$${item.isForSale ?? false ? (item.forSalePrice! * _quantity) : (item.price * _quantity)}',
                       style: TextStyle(color: Colors.white),
                     ),
                   );

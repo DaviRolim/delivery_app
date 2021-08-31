@@ -14,9 +14,30 @@ class CartProvider extends ChangeNotifier {
     return sum;
   }
 
-  void addItemToCart(CartItem item) {
-    _items.add(item);
-    print(items.length);
+  void addItemToCart(CartItem cartItem) {
+    if (cartItem.item.isForSale ?? false) {
+      cartItem.item.price = cartItem.item.forSalePrice!;
+    }
+    bool itemInCart =
+        _items.indexWhere((element) => element.item.id == cartItem.item.id) >= 0
+            ? true
+            : false;
+    if (itemInCart) {
+      updateQuantity(cartItem.item, cartItem.quantity);
+    } else {
+      _items.add(cartItem);
+      notifyListeners();
+    }
+  }
+
+  void deleteItem(CartItem item) {
+    _items.remove(item);
+    notifyListeners();
+  }
+
+  void updateQuantity(Item item, int quantity) {
+    _items[_items.indexWhere((cartItem) => cartItem.item.id == item.id)]
+        .quantity = quantity;
     notifyListeners();
   }
 

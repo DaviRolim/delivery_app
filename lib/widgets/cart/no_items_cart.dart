@@ -23,17 +23,15 @@ class NoItemsOnCart extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15),
-          Flexible(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
-              child: Text(
-                'Você ainda não tem nenhum item no carrinho.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.grey[300],
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
-              ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+            child: Text(
+              'Você ainda não tem nenhum item no carrinho.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.grey[300],
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(height: 50),

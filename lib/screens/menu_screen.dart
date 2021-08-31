@@ -64,7 +64,7 @@ class MenuScreen extends ConsumerWidget {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return AddToCartScreen(item);
+                                          return AddToCartScreen(item, 1);
                                         },
                                       ),
                                     );
@@ -99,7 +99,16 @@ class MenuScreen extends ConsumerWidget {
                         (item) => Column(
                           children: [
                             InkWell(
-                              // onTap: () =>  ref.read(cartProvider).addItemToCart(item),
+                              onTap: () {
+                                // ref.read(cartProvider).addItemToCart(item);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return AddToCartScreen(item, 1);
+                                    },
+                                  ),
+                                );
+                              },
                               child: LineItem(
                                 title: item.name,
                                 subtitle: item.description,
