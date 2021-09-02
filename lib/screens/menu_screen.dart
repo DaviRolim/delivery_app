@@ -1,5 +1,4 @@
 import 'package:classe_a_clone/data/items.dart';
-import 'package:classe_a_clone/models/Item.dart';
 import 'package:classe_a_clone/providers/cart_provider.dart';
 import 'package:classe_a_clone/screens/add_to_cart_screen.dart';
 import 'package:classe_a_clone/widgets/menu/custom_divider.dart';
@@ -40,9 +39,7 @@ class MenuScreen extends ConsumerWidget {
                   //   textAlign: TextAlign.left,
                   //   style: TextStyle(fontWeight: FontWeight.bold),
                   // ),
-                  background: 1 == 2
-                      ? Placeholder()
-                      : Image.network(sushiImage, fit: BoxFit.cover),
+                  background: Image.network(sushiImage, fit: BoxFit.cover),
                 ),
               ),
             ),

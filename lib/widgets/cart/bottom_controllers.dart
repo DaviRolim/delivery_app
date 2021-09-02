@@ -1,3 +1,4 @@
+import 'package:classe_a_clone/models/Cart.dart';
 import 'package:classe_a_clone/models/Item.dart';
 import 'package:classe_a_clone/providers/cart_provider.dart';
 import 'package:flutter/material.dart';

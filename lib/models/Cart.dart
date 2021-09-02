@@ -1,16 +1,8 @@
 import 'Item.dart';
 
-class Cart {
-  List<Item>? items = [];
+class CartItem {
+  int quantity;
+  Item item;
 
-  void addItem(Item item) {
-    print(item.name);
-    items!.add(item);
-  }
-
-  get total {
-    var sum = 0.0;
-    items!.forEach((element) => sum += element.price);
-    return sum;
-  }
+  CartItem(this.quantity, this.item);
 }

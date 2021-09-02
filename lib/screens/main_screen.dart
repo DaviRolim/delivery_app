@@ -33,6 +33,10 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       },
       {
         'page': OrdersScreen(),
+        'appBarTitle': Text(
+          'Orders',
+          style: TextStyle(color: Colors.white),
+        ),
       },
       {
         'page': ProfileScreen(),
@@ -65,6 +69,13 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[900],
+      appBar: _pages[_selectedPageIndex]['appBarTitle'] != null
+          ? AppBar(
+              backgroundColor: Colors.black,
+              title: _pages[_selectedPageIndex]['appBarTitle'],
+              centerTitle: false,
+            )
+          : null,
       body: Container(child: _pages[_selectedPageIndex]['page']),
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: hiding.visible,

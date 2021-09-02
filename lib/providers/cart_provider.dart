@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:classe_a_clone/models/Cart.dart';
 import 'package:classe_a_clone/models/Item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,11 +44,4 @@ class CartProvider extends ChangeNotifier {
 
   static final cartProvider =
       ChangeNotifierProvider<CartProvider>((ref) => CartProvider());
-}
-
-class CartItem {
-  int quantity;
-  Item item;
-
-  CartItem(this.quantity, this.item);
 }

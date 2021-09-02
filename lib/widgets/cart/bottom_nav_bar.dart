@@ -1,4 +1,6 @@
+import 'package:classe_a_clone/models/Order.dart';
 import 'package:classe_a_clone/providers/cart_provider.dart';
+import 'package:classe_a_clone/providers/order_provider.dart';
 import 'package:classe_a_clone/widgets/cart/no_items_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,17 +9,27 @@ class BottomNavBarCart extends StatelessWidget {
   BottomNavBarCart({Key? key}) : super(key: key);
 
   final cartProvider = CartProvider.cartProvider;
+  final orderProvider = OrderProvider.orderProvider;
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, ch) {
       final cart = ref.watch(cartProvider);
+      final order = ref.read(orderProvider);
       return cart.items.length > 0
           ? Container(
               height: 42,
               color: Colors.transparent,
               margin: EdgeInsets.all(20),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  OrderItem orderItem = OrderItem(
+                      id: '1',
+                      total: cart.totalPrice,
+                      items: cart.items,
+                      dateTime: DateTime.now(),
+                      status: OrderStatus.PREPARING);
+                  order.placeOrder(orderItem);
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.black),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
