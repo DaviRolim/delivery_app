@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.classe_a_clone">
    <application
-        android:label="classe_a_clone"
+        android:label="sheipadinho"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

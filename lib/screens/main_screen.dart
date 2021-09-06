@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:classe_a_clone/helpers/hide_navbar.dart';
 import 'package:classe_a_clone/providers/cart_provider.dart';
+import 'package:classe_a_clone/screens/auth_screen.dart';
 import 'package:classe_a_clone/screens/cart_screen.dart';
 import 'package:classe_a_clone/screens/for_sale_screen.dart';
 import 'package:classe_a_clone/screens/menu_screen.dart';
@@ -8,7 +9,6 @@ import 'package:classe_a_clone/screens/orders_screen.dart';
 import 'package:classe_a_clone/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart' as prov;
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,6 +22,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   List<Map<String, dynamic>> _pages = [];
   int _selectedPageIndex = 0;
   final HideNavbar hiding = HideNavbar();
+  final isAuth = false;
 
   @override
   void initState() {
@@ -39,7 +40,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         ),
       },
       {
-        'page': ProfileScreen(),
+        'page': isAuth ? ProfileScreen() : AuthScreen(),
+        'appBarTitle': Text(
+          isAuth ? 'Profile' : 'Enter',
+          style: TextStyle(color: Colors.white),
+        ),
       },
       {
         'page': ForSale(),

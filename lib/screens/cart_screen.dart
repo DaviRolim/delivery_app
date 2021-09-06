@@ -1,5 +1,4 @@
 import 'package:classe_a_clone/providers/cart_provider.dart';
-import 'package:classe_a_clone/screens/add_to_cart_screen.dart';
 import 'package:classe_a_clone/widgets/cart/address_info_section.dart';
 import 'package:classe_a_clone/widgets/cart/bottom_nav_bar.dart';
 import 'package:classe_a_clone/widgets/cart/cart_recommendations.dart';
