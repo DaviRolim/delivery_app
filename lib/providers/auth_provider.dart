@@ -9,8 +9,8 @@ enum NotifierState { initial, loading, loaded }
 class AuthProvider extends ChangeNotifier {
   final _authRepository = AuthRepository();
 
-  Either<Failure, bool> _isAuth = Right(false);
-  Either<Failure, bool> get isAuth => _isAuth;
+  bool _isAuth = false;
+  bool get isAuth => _isAuth;
 
   NotifierState _state = NotifierState.initial;
   NotifierState get state => _state;
@@ -19,34 +19,59 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _setAuth(Either<Failure, bool> isAuth) {
+  void _setAuth(bool isAuth) {
     _isAuth = isAuth;
     notifyListeners();
   }
 
-  void signUpWithEmailAndPassword(
+  void signOut() async {
+    try {
+      _authRepository.signOut();
+      _setAuth(false);
+      notifyListeners();
+    } on Failure catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
+
+  Future<Unit> signInWithEmailAndPassword(String email, String password) async {
+    _setState(NotifierState.loading);
+    print(email + password);
+    try {
+      await _authRepository.signInWithEmailAndPassword(
+        email,
+        password,
+      );
+      _setAuth(true);
+    } on Failure catch (e) {
+      print(e.toString());
+      throw e;
+    }
+
+    _setState(NotifierState.loaded);
+    return unit;
+  }
+
+  Future<Unit> signUpWithEmailAndPassword(
       String email, String password, String username) async {
     _setState(NotifierState.loading);
+    try {
+      await _authRepository.signUpWithEmailAndPassword(
+          email, password, username);
+      _setAuth(true);
+    } on Failure catch (e) {
+      print(e.toString());
+      throw e;
+    }
 
-    await Task(() => _authRepository.signUpWithEmailAndPassword(
-            email, password, username))
-        // Automatically catches exceptions
-        .attempt()
-        // Had to add this map because by default Task resolve to Either<Object, (return of my func)>
-        .map(
-          (either) => either.leftMap((obj) {
-            try {
-              return obj as Failure;
-            } catch (e) {
-              throw obj;
-            }
-          }),
-        )
-        // Converts Task back into a Future
-        .run()
-        // Classic Future continuation
-        .then((value) => _setAuth(value));
     _setState(NotifierState.loaded);
+    return unit;
+  }
+
+  void tryAutoLogin() {
+    _authRepository.tryAutoLogin();
+    _setAuth(true);
   }
 
   static final authNotifier =

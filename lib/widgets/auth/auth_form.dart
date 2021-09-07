@@ -1,4 +1,7 @@
+import 'package:classe_a_clone/models/failure.dart';
 import 'package:classe_a_clone/providers/auth_provider.dart';
+import 'package:classe_a_clone/screens/main_screen.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +36,7 @@ class _AuthFormState extends ConsumerState<AuthForm> {
   bool hidePassword = true;
   bool hideConfirmPassword = true;
 
-  final authNotifier = AuthProvider.authNotifier;
+  final authProvider = AuthProvider.authNotifier;
 
   @override
   void dispose() {
@@ -294,8 +297,36 @@ class _AuthFormState extends ConsumerState<AuthForm> {
                     onPressed: () async {
                       bool isValid = _trySubmit();
                       if (isValid) {
-                        ref.read(authNotifier).signUpWithEmailAndPassword(
-                            _userEmail, _userPassword, _userName);
+                        try {
+                          if (widget.isLogin) {
+                            await ref
+                                .read(authProvider)
+                                .signInWithEmailAndPassword(
+                                    _userEmail, _userPassword);
+                          } else if (!widget.isLogin) {
+                            await ref
+                                .read(authProvider)
+                                .signUpWithEmailAndPassword(
+                                    _userEmail, _userPassword, _userName);
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Sucesso na autenticação'),
+                              backgroundColor: Colors.green[400],
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                          Navigator.of(context)
+                              .pushReplacementNamed(MainScreen.routeName);
+                        } on Failure catch (failure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(failure.toString()),
+                              backgroundColor: Colors.red[400],
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
                       }
                     },
                     child: Text(widget.isLogin ? 'ENTRAR' : 'CADASTRAR'),
